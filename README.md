@@ -2,9 +2,6 @@
 
 Simulador numérico interativo da Turbina de Tesla desenvolvido para o projeto prático da disciplina **Física das Oscilações, Ondas e Termodinâmica (FOOT)** — PUC-Campinas, 1º semestre de 2026.
 
-**Autores:** Gabriel Cattuzo (RA 24015324) · Guilherme Dias Cavalheri (RA 24013423)  
-**Orientador:** Prof. Leandro
-
 ---
 
 ## Sobre o Projeto
