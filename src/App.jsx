@@ -6,7 +6,7 @@ const FLUIDS = {
 
 const R0_FIXO = 0.0075; 
 
-const ETA_MAX_PROTOTIPO = 30.0; 
+const ETA_MAX_PROTOTIPO = 40.0; 
 
 function calcTurbina(p) {
   const fl  = FLUIDS[p.fluid];
@@ -256,9 +256,14 @@ function ParamInput({ label, id, value, min, max, step, unit, onChange, hint }) 
   const [focus, setFocus] = useState(false);
   useEffect(() => { if (!focus) setDraft(String(value)); }, [value, focus]);
   function commit(raw) {
-    const n = parseFloat(raw);
-    if (!isNaN(n)) { const v = parseFloat((Math.round(Math.min(max, Math.max(min, n)) / step) * step).toFixed(10)); onChange(v); setDraft(String(v)); }
-    else setDraft(String(value));
+    const n = parseFloat(raw.replace(",", "."));
+    if (!isNaN(n)) {
+      const v = parseFloat(Math.min(max, Math.max(min, n)).toFixed(10));
+      onChange(v);
+      setDraft(String(v));
+    } else {
+      setDraft(String(value));
+    }
     setFocus(false);
   }
   function kd(e) {
@@ -413,7 +418,6 @@ export default function App() {
     let timer = null;
     const applySize = () => {
       const sz = Math.min(wrap.clientWidth, 380);
-      
       if (c.width !== sz || c.height !== sz) {
         c.width = sz;
         c.height = sz;
@@ -421,7 +425,6 @@ export default function App() {
     };
     applySize();
     const ro = new ResizeObserver(entries => {
-      
       for (const entry of entries) {
         if (entry.target !== wrap) continue;
         clearTimeout(timer);
@@ -653,7 +656,7 @@ export default function App() {
               <ParamInput label="Nº de discos"        id="disks" value={disks} min={2}   max={12}   step={1}   unit="discos" onChange={setDisks} hint="máx 12" />
               <ParamInput label="Espaçamento (e)"     id="gap"   value={gap}   min={1.0} max={5}    step={0.5} unit="mm"     onChange={setGap}   hint="mín 1.0 mm" />
               <ParamInput label="Diâmetro do bico"    id="bico"  value={bico}  min={2.5} max={8}    step={0.5} unit="mm"     onChange={setBico}  hint="mín 2.5 mm" />
-              <ParamInput label="RPM medido"           id="rpm"   value={rpm}   min={100} max={3000} step={100} unit="rpm"    onChange={setRpm}   hint="máx 3000" />
+              <ParamInput label="RPM medido"           id="rpm"   value={rpm}   min={100} max={3000} step={1}   unit="rpm"    onChange={setRpm}   hint="máx 3000" />
               <ParamInput label="Pressão de entrada"  id="pres"  value={pres}  min={1.5} max={6}    step={0.5} unit="bar"    onChange={setPres}  hint="mín 1.5 bar" />
               <ParamInput label="Vazão medida (Q)"    id="flow"  value={flow}  min={1.0} max={20}   step={0.5} unit="L/min"  onChange={setFlow}  />
             </div>
